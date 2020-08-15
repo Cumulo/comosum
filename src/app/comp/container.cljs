@@ -12,7 +12,8 @@
             [cumulo-reel.comp.reel :refer [comp-reel]]
             [app.config :refer [dev?]]
             [app.schema :as schema]
-            [app.config :as config]))
+            [app.config :as config]
+            [app.comp.dashboard :refer [comp-dashboard]]))
 
 (defcomp
  comp-offline
@@ -60,10 +61,10 @@
      (comp-offline)
      (div
       {:style (merge ui/global ui/fullscreen ui/column)}
-      (comp-navigation (:logged-in? store) (:count store))
+      (comp-navigation (>> states :nav) (:logged-in? store) (:count store))
       (if (:logged-in? store)
         (case (:name router)
-          :home (<> "Home")
+          :home (comp-dashboard (:data router))
           :profile (comp-profile (:user store) (:data router))
           (<> router))
         (comp-login (>> states :login)))
