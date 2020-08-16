@@ -13,7 +13,8 @@
             [app.config :refer [dev?]]
             [app.schema :as schema]
             [app.config :as config]
-            [app.comp.dashboard :refer [comp-dashboard]]))
+            [app.comp.dashboard :refer [comp-dashboard]]
+            [app.comp.question-page :refer [comp-question-page]]))
 
 (defcomp
  comp-offline
@@ -64,8 +65,9 @@
       (comp-navigation (>> states :nav) (:logged-in? store) (:count store))
       (if (:logged-in? store)
         (case (:name router)
-          :home (comp-dashboard (:data router))
-          :profile (comp-profile (:user store) (:data router))
+          :home (comp-dashboard router-data)
+          :question (comp-question-page (>> states :question) (:main router-data))
+          :profile (comp-profile (:user store) router-data)
           (<> router))
         (comp-login (>> states :login)))
       (comp-status-color (:color store))
