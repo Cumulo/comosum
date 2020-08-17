@@ -19,5 +19,10 @@
             :user/log-out user/log-out
             :router/change router/change
             :question/add question/add-question
+            :question/rm question/rm-question
+            :question/update question/update-question
+            :question/add-reply question/add-reply
+            :question/update-reply question/update-reply
+            :question/rm-reply question/rm-reply
             (do (println "Unknown op:" op) identity))]
     (f db op-data sid op-id op-time session user)))
