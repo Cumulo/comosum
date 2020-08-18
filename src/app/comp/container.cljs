@@ -65,7 +65,8 @@
       (comp-navigation (>> states :nav) (:logged-in? store) (:count store))
       (if (:logged-in? store)
         (case (:name router)
-          :home (comp-dashboard router-data)
+          :home
+            (comp-dashboard (>> states :dashboard) (:main router-data) (:query router-data))
           :question (comp-question-page (>> states :question) (:main router-data))
           :profile (comp-profile (:user store) router-data)
           (<> router))

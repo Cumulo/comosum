@@ -17,10 +17,10 @@
  (states question-id reply)
  (let [edit-reply (use-prompt
                    (>> states :edit)
-                   {:text "Edit reply", :initial (:content reply)})
+                   {:text "Edit reply", :initial (:content reply), :multiline? true})
        confirm-remove (use-confirm (>> states :remove) {:text "Sure to remove reply?"})]
    (div
-    {:style ui/row-parted}
+    {:style (merge ui/row-parted {:margin "16px 0px"})}
     (div
      {}
      (<> (:content reply))
@@ -56,6 +56,11 @@
  (let [edit-title (use-prompt
                    (>> states :title)
                    {:initial (:title question), :text "Change title"})
+       edit-desc (use-prompt
+                  (>> states :desc)
+                  {:initial (:description question),
+                   :text "Change description",
+                   :multiline? true})
        confirm-remove (use-confirm
                        (>> states :remove)
                        {:text "Sure to remove this question?"})
@@ -68,7 +73,7 @@
      {:style ui/row-parted}
      (div
       {:style ui/row-middle}
-      (<> (:title question))
+      (<> (:title question) {:font-size 18})
       (=< 8 nil)
       (comp-icon
        :edit
@@ -88,9 +93,26 @@
          (fn [] (d! :question/rm (:id question)) (d! :router/change {:name :home}))))))
     (div
      {}
+     (let [desc (:description question)]
+       (if (some? desc)
+         (<> desc {:color (hsl 0 0 50)})
+         (<> "No description" {:font-family ui/font-fancy, :color (hsl 0 0 80)})))
+     (=< 8 nil)
+     (comp-icon
+      :edit
+      {:font-size 16, :color (hsl 200 80 68), :cursor :pointer}
+      (fn [e d!]
+        ((:show edit-desc)
+         d!
+         (fn [text]
+           (when-not (string/blank? text)
+             (d! :question/update {:id (:id question), :description text})))))))
+    (div
+     {}
      (<>
       (-> (dayjs (:time question)) (.format "YYYY-MM-DD HH:mm"))
       {:color (hsl 0 0 80), :font-family ui/font-fancy}))
+    (=< nil 16)
     (div
      {}
      (a
@@ -110,4 +132,5 @@
             (map (fn [[rid reply]] [rid (comp-reply (>> states rid) (:id question) reply)])))))
     (:ui confirm-remove)
     (:ui edit-title)
-    (:ui add-reply))))
+    (:ui add-reply)
+    (:ui edit-desc))))
