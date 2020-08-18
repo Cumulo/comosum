@@ -2,7 +2,8 @@
 (ns app.twig.container
   (:require [recollect.twig :refer [deftwig]]
             [app.twig.user :refer [twig-user]]
-            ["randomcolor" :as color]))
+            ["randomcolor" :as color]
+            [clojure.string :as string]))
 
 (deftwig
  twig-members
@@ -25,7 +26,16 @@
                 router
                 :data
                 (case (:name router)
-                  :home (:questions db)
+                  :home
+                    (let [query (:query (:data router))]
+                      {:main (if (string/blank? query)
+                         (:questions db)
+                         (->> (:questions db)
+                              (filter
+                               (fn [[qid question]]
+                                 (string/includes? (:title question) query)))
+                              (into {}))),
+                       :query query})
                   :question {:main (get-in db [:questions (:data router)])}
                   :profile (twig-members (:sessions db) (:users db))
                   {})),
