@@ -20,7 +20,9 @@
                    {:text "Edit reply", :initial (:content reply), :multiline? true})
        confirm-remove (use-confirm (>> states :remove) {:text "Sure to remove reply?"})]
    (div
-    {:style (merge ui/row-parted {:margin "16px 0px"})}
+    {:style (merge
+             ui/row-parted
+             {:margin "16px 0px", :background-color :white, :padding "16px"})}
     (div
      {}
      (<> (:content reply))
@@ -68,68 +70,75 @@
                   (>> states :reply)
                   {:initial "", :multiline? true, :text "Add reply"})]
    (div
-    {:style {:padding "8px 16px"}}
+    {:style (merge ui/expand {:padding "16px 16px", :background-color (hsl 0 0 96)})}
     (div
-     {:style ui/row-parted}
+     {:style {:margin "0 auto", :max-width 800, :min-height "100%"}}
      (div
-      {:style ui/row-middle}
-      (<> (:title question) {:font-size 18})
-      (=< 8 nil)
-      (comp-icon
-       :edit
-       {:font-size 16, :color (hsl 200 80 68), :cursor :pointer}
-       (fn [e d!]
-         ((:show edit-title)
-          d!
-          (fn [text]
-            (when-not (string/blank? text)
-              (d! :question/update {:id (:id question), :title text})))))))
-     (comp-icon
-      :x
-      {:font-size 16, :color (hsl 0 80 68), :cursor :pointer}
-      (fn [e d!]
-        ((:show confirm-remove)
-         d!
-         (fn [] (d! :question/rm (:id question)) (d! :router/change {:name :home}))))))
-    (div
-     {}
-     (let [desc (:description question)]
-       (if (some? desc)
-         (<> desc {:color (hsl 0 0 50)})
-         (<> "No description" {:font-family ui/font-fancy, :color (hsl 0 0 80)})))
-     (=< 8 nil)
-     (comp-icon
-      :edit
-      {:font-size 16, :color (hsl 200 80 68), :cursor :pointer}
-      (fn [e d!]
-        ((:show edit-desc)
-         d!
-         (fn [text]
-           (when-not (string/blank? text)
-             (d! :question/update {:id (:id question), :description text})))))))
-    (div
-     {}
-     (<>
-      (-> (dayjs (:time question)) (.format "YYYY-MM-DD HH:mm"))
-      {:color (hsl 0 0 80), :font-family ui/font-fancy}))
-    (=< nil 16)
-    (div
-     {}
-     (a
-      {:style ui/link,
-       :inner-text "Add reply",
-       :on-click (fn [e d!]
-         ((:show add-reply)
-          d!
-          (fn [text]
-            (when-not (string/blank? text)
-              (d! :question/add-reply {:question-id (:id question), :content text})))))}))
-    (if (empty? (:replies question))
-      (div {:style (merge ui/center {:color (hsl 0 0 80)})} (<> "No replies"))
-      (list->
+      {:style {:background-color :white, :padding 8}}
+      (div
+       {:style ui/row-parted}
+       (div
+        {:style ui/row-middle}
+        (<> (:title question) {:font-size 18})
+        (=< 8 nil)
+        (comp-icon
+         :edit
+         {:font-size 16, :color (hsl 200 80 68), :cursor :pointer}
+         (fn [e d!]
+           ((:show edit-title)
+            d!
+            (fn [text]
+              (when-not (string/blank? text)
+                (d! :question/update {:id (:id question), :title text})))))))
+       (comp-icon
+        :x
+        {:font-size 16, :color (hsl 0 80 68), :cursor :pointer}
+        (fn [e d!]
+          ((:show confirm-remove)
+           d!
+           (fn [] (d! :question/rm (:id question)) (d! :router/change {:name :home}))))))
+      (div
        {}
-       (->> (:replies question)
-            (map (fn [[rid reply]] [rid (comp-reply (>> states rid) (:id question) reply)])))))
+       (let [desc (:description question)]
+         (if (some? desc)
+           (<> desc {:color (hsl 0 0 50)})
+           (<> "No description" {:font-family ui/font-fancy, :color (hsl 0 0 80)})))
+       (=< 8 nil)
+       (comp-icon
+        :edit
+        {:font-size 16, :color (hsl 200 80 68), :cursor :pointer}
+        (fn [e d!]
+          ((:show edit-desc)
+           d!
+           (fn [text]
+             (when-not (string/blank? text)
+               (d! :question/update {:id (:id question), :description text})))))))
+      (div
+       {}
+       (<>
+        (-> (dayjs (:time question)) (.format "YYYY-MM-DD HH:mm"))
+        {:color (hsl 0 0 80), :font-family ui/font-fancy})))
+     (=< nil 8)
+     (div
+      {}
+      (if (empty? (:replies question))
+        (div {:style (merge ui/center {:color (hsl 0 0 80)})} (<> "No replies"))
+        (list->
+         {}
+         (->> (:replies question)
+              (map
+               (fn [[rid reply]] [rid (comp-reply (>> states rid) (:id question) reply)])))))
+      (div
+       {:style {:background-color :white, :padding 8}}
+       (a
+        {:style ui/link,
+         :inner-text "Add reply",
+         :on-click (fn [e d!]
+           ((:show add-reply)
+            d!
+            (fn [text]
+              (when-not (string/blank? text)
+                (d! :question/add-reply {:question-id (:id question), :content text})))))}))))
     (:ui confirm-remove)
     (:ui edit-title)
     (:ui add-reply)

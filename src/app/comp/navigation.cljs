@@ -20,7 +20,8 @@
               :padding "0 16px",
               :font-size 16,
               :border-bottom (str "1px solid " (hsl 0 0 0 0.1)),
-              :font-family ui/font-fancy})}
+              :font-family ui/font-fancy,
+              :box-shadow (str "0 1px 2px " (hsl 0 0 0 0.2))})}
     (div
      {:on-click (fn [e d!] (d! :router/change {:name :home})), :style {:cursor :pointer}}
      (<> (:title config/site) nil)
