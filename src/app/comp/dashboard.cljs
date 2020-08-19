@@ -19,36 +19,43 @@
                    (>> states :query)
                    {:text "Query keyword", :initial-text query})]
    (div
-    {:style {:padding "8px 16px"}}
+    {:style (merge ui/expand {:padding "8px 16px", :background-color (hsl 0 0 96)})}
     (div
-     {}
-     (<> "Topics:")
-     (=< 8 nil)
-     (if (string/blank? query)
-       (<> "show all" {:font-family ui/font-fancy, :color (hsl 0 0 80)})
-       (<> query))
-     (=< 8 nil)
-     (comp-icon
-      :edit
-      {:font-size 14, :color (hsl 200 80 70), :cursor :pointer}
-      (fn [e d!]
-        ((:show edit-query)
-         d!
-         (fn [text] (d! :router/change {:name :home, :data {:query text}}))))))
-    (list->
-     {}
-     (->> questions-dict
-          (sort-by (fn [[qid question]] (unchecked-negate (:time question))))
-          (map
-           (fn [[qid question]]
-             [qid
-              (div
-               {:style {:font-size 16, :cursor :pointer},
-                :on-click (fn [e d!]
-                  (d! :router/change {:name :question, :data (:id question)}))}
-               (<>
-                (-> (dayjs (:time question)) (.format "MM-DD HH:mm"))
-                {:color (hsl 0 0 80), :font-family ui/font-fancy})
-               (=< 8 nil)
-               (<> (:title question)))]))))
-    (:ui edit-query))))
+     {:style {:padding "16px 16px",
+              :max-width 800,
+              :margin "0 auto",
+              :background-color :white,
+              :min-height "100%",
+              :box-shadow (str "0 0 2px " (hsl 0 0 0 0.3))}}
+     (div
+      {}
+      (<> "Topics:" {:font-size 32, :font-family ui/font-fancy, :font-weight 200})
+      (=< 8 nil)
+      (if (string/blank? query)
+        (<> "show all" {:font-family ui/font-fancy, :color (hsl 0 0 80)})
+        (<> query))
+      (=< 8 nil)
+      (comp-icon
+       :edit
+       {:font-size 14, :color (hsl 200 80 70), :cursor :pointer}
+       (fn [e d!]
+         ((:show edit-query)
+          d!
+          (fn [text] (d! :router/change {:name :home, :data {:query text}}))))))
+     (list->
+      {}
+      (->> questions-dict
+           (sort-by (fn [[qid question]] (unchecked-negate (:time question))))
+           (map
+            (fn [[qid question]]
+              [qid
+               (div
+                {:style {:font-size 16, :cursor :pointer},
+                 :on-click (fn [e d!]
+                   (d! :router/change {:name :question, :data (:id question)}))}
+                (<>
+                 (-> (dayjs (:time question)) (.format "MM-DD HH:mm"))
+                 {:color (hsl 0 0 80), :font-family ui/font-fancy})
+                (=< 8 nil)
+                (<> (:title question)))]))))
+     (:ui edit-query)))))
