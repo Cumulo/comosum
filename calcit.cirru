@@ -1932,6 +1932,11 @@
                             :data $ {}
                               |T $ {} (:type :leaf) (:text |slurp) (:id |Hym4Dc21G) (:by |root) (:at 1510938412617)
                               |j $ {} (:type :leaf) (:text "|\"entry/main.css") (:id |SJgBNvq3kz) (:by |root) (:at 1510938422998)
+                  |yT $ {} (:type :expr) (:by |B1y7Rc-Zz) (:at 1598886964183)
+                    :data $ {}
+                      |T $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1598886967461) (:text |:manifest) (:id |PajRbUJNNleaf)
+                      |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1598886971396) (:text "|\"manifest.json") (:id |-HpmHb6kKO)
+                    :id |PajRbUJNN
           |dev-page $ {} (:type :expr) (:id |ryIzN5LleCrb) (:by nil) (:at 1500541010211)
             :data $ {}
               |T $ {} (:type :leaf) (:id |HkvfN5UlgAS-) (:text |defn) (:by |root) (:at 1500541010211)
@@ -2671,7 +2676,7 @@
                   |u $ {} (:type :expr) (:by |root) (:at 1527867511986) (:id |r1gxKOykeQ)
                     :data $ {}
                       |T $ {} (:type :leaf) (:by |root) (:at 1527867512819) (:text |:icon) (:id |r1gxKOykeQleaf)
-                      |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1597422554104) (:text "|\"http://cdn.tiye.me/logo/topixim.png") (:id |B1SY_yJx7)
+                      |j $ {} (:type :leaf) (:by |B1y7Rc-Zz) (:at 1598887844674) (:text "|\"http://cdn.tiye.me/logo/comosum.png") (:id |B1SY_yJx7)
                   |x5 $ {} (:type :expr) (:by |root) (:at 1528009883995) (:id |ByxEoNG-lQ)
                     :data $ {}
                       |T $ {} (:type :leaf) (:by |root) (:at 1528009886059) (:text |:cdn-url) (:id |ByxEoNG-lQleaf)
